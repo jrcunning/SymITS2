@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# This script takes one argument: a zip file of all fastq files
-
-# Unzip sequence data archive
-unzip -j $1 -d data/fastq
-
 # Generate config files for merging reads with illumina-utils
 mkdir -p data/merge
 cp data/fastq_list.txt data/fastq/fastq_list.txt
