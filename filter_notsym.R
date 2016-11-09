@@ -26,7 +26,7 @@ writeXStringSet(poorseqs, filepath="data/poorseqs.fasta", append=FALSE,
                 compress=FALSE, compression_level=NA, format="fasta")
 
 # Blast poor matching sequences to NCBI nr databse, get top hit
-system("/Users/jrcunning/ncbi-blast-2.2.31+/bin/blastn -db nr -remote -query data/poorseqs.fasta -outfmt '6 qseqid qcovs stitle sseqid' -max_target_seqs 1 | sort -u -k1,1 > data/poorseqs_blast_results.txt")
+system("blastn -db nr -remote -query data/poorseqs.fasta -outfmt '6 qseqid qcovs stitle sseqid' -max_target_seqs 1 | sort -u -k1,1 > data/poorseqs_blast_results.txt")
 
 # Read BLAST results
 poorseqs_blast <- readLines("data/poorseqs_blast_results.txt")
