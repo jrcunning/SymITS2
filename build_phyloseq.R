@@ -1,6 +1,7 @@
 # Script to build phyloseq object
 library(stringr)
 library(phyloseq)
+library(reshape2)
 
 # Get command line arguments
 args = commandArgs(trailingOnly=TRUE)
