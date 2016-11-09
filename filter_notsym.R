@@ -15,7 +15,7 @@ load(args[1])
 tax <- data.frame(tax_table(phy), stringsAsFactors=F)
 
 # Identify taxa with poor matches to reference database
-poortax <- subset(tax, as.numeric(sim) < 70)$otu
+poortax <- subset(tax, as.numeric(sim) < 90)$otu
 
 # Get corresponding sequences
 seqs <- readDNAStringSet(args[2])
