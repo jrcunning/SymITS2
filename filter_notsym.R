@@ -22,14 +22,14 @@ seqs <- readDNAStringSet(args[2])
 names(seqs) <- gsub(" .*$", "", names(seqs))
 poorseqs <- subset(seqs, names(seqs) %in% poortax)
 
-writeXStringSet(poorseqs, filepath="poorseqs.fasta", append=FALSE,
+writeXStringSet(poorseqs, filepath="data/poorseqs.fasta", append=FALSE,
                 compress=FALSE, compression_level=NA, format="fasta")
 
 # Blast poor matching sequences to NCBI nr databse, get top hit
-system("/Users/jrcunning/ncbi-blast-2.2.31+/bin/blastn -db nr -remote -query poorseqs.fasta -outfmt '6 qseqid qcovs stitle sseqid' -max_target_seqs 1 | sort -u -k1,1 > poorseqs_blast_results.txt")
+system("/Users/jrcunning/ncbi-blast-2.2.31+/bin/blastn -db nr -remote -query data/poorseqs.fasta -outfmt '6 qseqid qcovs stitle sseqid' -max_target_seqs 1 | sort -u -k1,1 > data/poorseqs_blast_results.txt")
 
 # Read BLAST results
-poorseqs_blast <- readLines("poorseqs_blast_results.txt")
+poorseqs_blast <- readLines("data/poorseqs_blast_results.txt")
 # If the top hit from NCBI does not contain the string "Symbiodinium", then this sequence is assumed to not be Symbiodinium.
 poorseqs_sym <- data.frame(otu=str_extract(poorseqs_blast, "denovo[^\t]*"),
                            symbio=str_detect(poorseqs_blast, "Symbiodinium"),   # TRUE if Symbiodinium
