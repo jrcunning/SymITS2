@@ -1,4 +1,6 @@
 # Script to build phyloseq object
+library(stringr)
+library(phyloseq)
 
 # Get command line arguments
 args = commandArgs(trailingOnly=TRUE)
