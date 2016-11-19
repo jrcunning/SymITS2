@@ -14,7 +14,28 @@ names(otus) <- gsub(" .*$", "", names(otus))
 ref <- readDNAStringSet(args[2])
 
 # import substitution matrix
-EDNAFULL <- as.matrix(read.table("data/EDNAFULL", skip=8, header=T, row.names=1))
+EDNAFULL <- matrix(
+strsplit(
+"5 -4 -4 -4 -4  1  1 -4 -4  1 -4 -1 -1 -1 -2
+-4  5 -4 -4 -4  1 -4  1  1 -4 -1 -4 -1 -1 -2
+-4 -4  5 -4  1 -4  1 -4  1 -4 -1 -1 -4 -1 -2
+-4 -4 -4  5  1 -4 -4  1 -4  1 -1 -1 -1 -4 -2
+-4 -4  1  1 -1 -4 -2 -2 -2 -2 -1 -1 -3 -3 -1
+ 1  1 -4 -4 -4 -1 -2 -2 -2 -2 -3 -3 -1 -1 -1
+ 1 -4  1 -4 -2 -2 -1 -4 -2 -2 -3 -1 -3 -1 -1
+-4  1 -4  1 -2 -2 -4 -1 -2 -2 -1 -3 -1 -3 -1
+-4  1  1 -4 -2 -2 -2 -2 -1 -4 -1 -3 -3 -1 -1
+ 1 -4 -4  1 -2 -2 -2 -2 -4 -1 -3 -1 -1 -3 -1
+-4 -1 -1 -1 -1 -3 -3 -1 -1 -3 -1 -2 -2 -2 -1
+-1 -4 -1 -1 -1 -3 -1 -3 -3 -1 -2 -1 -2 -2 -1
+-1 -1 -4 -1 -3 -1 -3 -1 -3 -1 -2 -2 -1 -2 -1
+-1 -1 -1 -4 -3 -1 -1 -3 -1 -3 -2 -2 -2 -1 -1
+-2 -2 -2 -2 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1",
+split=" |  |\n|\t|\n\ ")[[1]],
+nrow=15, byrow=T, 
+dimnames=list(c("A","T","G","C","S","W","R","Y","K","M","B", "V","H","D","N"),
+              c("A","T","G","C","S","W","R","Y","K","M","B", "V","H","D","N")))
+storage.mode(EDNAFULL) <- "numeric"
 
 # Build function to find which reference sequences produces best alignment score using
 # Needleman-Wunsch algorithm with default EMBOSS parameters for DNA sequences.
@@ -33,7 +54,7 @@ get.best <- function(x) {
 
 # Set up for parallel computation
 library(parallel)
-cl <- makeCluster(detectCores() - 1)  # Initiate cluster
+cl <- makeCluster(detectCores())  # Initiate cluster
 clusterEvalQ(cl, library(Biostrings))  # Make Biostrings library available to cluster
 clusterExport(cl, c("EDNAFULL", "ref", "otus", "get.best"))  # Export objects to cluster
 
@@ -65,6 +86,6 @@ results <- within(results, {
 results2 <- with(results, aggregate(hit ~ otu + sim + del + ins + mis + len + score, FUN=paste0, collapse=";"))
 
 # Write results to .tsv file
-write.table(results2, file=paste(dirname(args[1]), "/", "nw_tophits.tsv", sep=""), 
+write.table(results2, file=paste(gsub("\\..*$", "", args[1]), "_nw_tophits.tsv", sep=""), 
             sep="\t", quote=FALSE)
 
