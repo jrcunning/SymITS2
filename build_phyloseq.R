@@ -6,8 +6,13 @@ library(reshape2)
 # Get command line arguments
 args = commandArgs(trailingOnly=TRUE)
 # If two arguments not provided, return an error
-if (length(args) < 4) {
-  stop("must specify 1: tax data (nw_tophits.tsv); 2: sample data (mapping_file.txt); 3: OTU table (.tsv); 4: output name", call.=FALSE)
+if (length(args) < 5) {
+  stop("must specify:
+       1: tax data (e.g., nw_tophits.tsv); 
+       2: sample data (e.g., mapping_file.txt); 
+       3: OTU table (.tsv); 
+       4: duplicate reference taxa names (e.g., ITS2db_trimmed_notuniques_otus.txt)
+       5: output .RData filename", call.=FALSE)
 }
 
 # Import taxonomic assignment data from nw
@@ -21,7 +26,7 @@ tax <- read.nw(args[1])
 
 # Deal with identical taxonomic assignments (because some reference sequences are not unique...)
 # Create names for groups of identical sequences based on members of group...
-ident <- readLines("data/ITS2db_trimmed_notuniques_otus.txt")
+ident <- readLines(args[4])
 ident <- gsub("denovo[0-9]*\t", "", ident)
 ident <- strsplit(ident, split="\t")
 ident2 <- lapply(ident, str_match_all, pattern="[A-I]{1}[0-9]{1,3}.*[_/]")
@@ -61,5 +66,5 @@ otu <- otu_table(read.table(args[3], header=T, check.names=F, row.names=1,
 phy <- phyloseq(otu, tax_table(as.matrix(tax)), sam)
 
 # Save phyloseq object
-save(phy, file=file.path("data", paste0(args[4], ".RData")))
+save(phy, file=file.path(args[5]))
 
