@@ -24,4 +24,4 @@ This is a collection of scripts for bioinformatic analysis of *Symbiodinium* ITS
    This script takes five command line arguments (1: taxonomic assignment output from run_nw.R, 2: sample metadata, 3: OTU table, 4: duplicate reference taxa names, 5: output filename) and builds an R [phyloseq](https://bioconductor.org/packages/release/bioc/html/phyloseq.html) object, saving as .RData file.
 - **filter_notsym.R**  
    This script imports a phyloseq object, identifies OTUs whose best taxonomic assignment from the reference database was \<90% similar, and BLASTs the corresponding sequences to the NCBI nr database. If the top hit returned does not contain the string "Symbiodinium", then the OTU is assumed to not be *Symbiodinium*. A filtered phyloseq object without these OTUs is returned and saved as .RData file.
-   takes three command line arguments (1: phyloseq object .RData, 2: sequence data .fasta, 3: output filename).
+   takes three command line arguments (1: phyloseq object .RData, 2: rep set fasta file, 3: output filename).
