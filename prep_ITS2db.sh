@@ -1,17 +1,5 @@
 #!/bin/bash
 	
-
-# Download sequences from supplementary material of Green et al. 2014 and add to database
-curl https://peerj.com/articles/386/DataS1_PerlScripts_alignment_Bioinformatics.zip > data/green.zip
-unzip -p data/green.zip DataS1* > data/greenseqs.aln
-awk '/Haplotype/ {a[$1] = a[$1]"\n"$2}END{for(i in a){print ">B1."i""a[i]}}' data/greenseqs.aln | sed 's/-//g' | \
-awk '!/^>/ { printf "%s", $0; n = "\n" } /^>/ { print n $0; n = "" } END { printf "%s", n }' | \
-sed 's/Haplotype\(.*$\)/\1_Green2014/' > data/greenseqs.fasta
-rm data/green.zip
-rm data/greenseqs.aln
-# If Green sequences are not already added to ITS2db_raw, add them.
-! grep -q "Green" data/ITS2db_raw.fasta && cat data/greenseqs.fasta >> data/ITS2db_raw.fasta
-
 # Trim primers from database sequences using cutadapt
 # Trim forward primers using cutadapt
 #   Allow error rate of 15% (0 indels/mismatches)
@@ -26,11 +14,6 @@ cutadapt -a AAGCATATAAGTAAGCGGAGG -e 0.15 data/ITS2db_trimF2_trimR.fasta -o data
 
 # Remove Ns if present in sequences -- noting that several were deposited in GenBank using Ns as gaps...
 #awk '!/>/ { gsub("N","") }; { print $0 }' data/ITS2db_raw.fasta > data/ITS2db.fasta
-
-
-# Generate id_to_taxonomy file
-TAB=$'\t'  # ( because \t is not recognized by sed on mac os x )
-sed -e 's/>\([A-Z]\)\(.*\)\(_.*$\)/\1\2\3'"${TAB}"'Symbiodiniaceae;Symbiodinium;Clade\1;\1\2;_;_/' -e 'tx' -e 'd' -e ':x' data/ITS2db.fasta > data/id_to_taxonomy.txt
 
 
 
@@ -80,7 +63,6 @@ rm data/ITS2db_trimF.fasta
 rm data/ITS2db_trimF2.fasta
 rm data/ITS2db_trimF2_trimR.fasta
 rm data/clade*
-rm data/greenseqs.fasta
 
 
 ### Identify identical reference sequences (post-trimming)
