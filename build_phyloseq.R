@@ -17,7 +17,7 @@ if (length(args) < 5) {
 
 # Import taxonomic assignment data from nw
 read.nw <- function(file) {
-  nw <- read.table(file, stringsAsFactors=FALSE)
+  nw <- read.table(file, quote="", stringsAsFactors=FALSE)
   nw <- nw[order(nw$otu),]
   return(nw)
 }
