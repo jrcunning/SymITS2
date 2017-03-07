@@ -63,7 +63,7 @@ otu <- otu_table(read.table(args[3], header=T, check.names=F, row.names=1,
 
 
 # Build phyloseq objects
-phy <- phyloseq(otu, tax_table(as.matrix(tax)), sam)
+phy <- phyloseq(otu, noquote(tax_table(as.matrix(tax))), sam)
 
 # Save phyloseq object
 save(phy, file=file.path(args[5]))
