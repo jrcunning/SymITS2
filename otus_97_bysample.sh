@@ -2,8 +2,10 @@
 
 # Takes input arguments: 1=path to input fasta file; 2=output directory path
 
-# Split into individual sample files
+# Delete output directory if it exists to avoid recursion
 rm -rf $2
+
+# Split into individual sample files
 split_sequence_file_on_sample_ids.py -i $1 -o $2
 
 # OTU clustering at 97% similarity for each sample (in parallel)

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Delete output directory if it exists to avoid recursion
+rm -rf $2
+
 # Cluster entire dataset at 100% similarity
 pick_otus.py -i $1 -s 1.0 -o $2
 
