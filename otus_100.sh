@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Arguments: 1: input fasta file
+#            2: output directory
+
 # Delete output directory if it exists to avoid recursion
 rm -rf $2
 
