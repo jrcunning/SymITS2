@@ -5,8 +5,8 @@ library(phyloseq)
 
 # Get command line arguments
 args = commandArgs(trailingOnly=TRUE)
-# If two arguments not provided, return an error
-if (length(args) < 3) {
+# If four arguments not provided, return an error
+if (length(args) < 4) {
   stop("must specify 
        1: phyloseq object (.RData); 
        2: sequences; 
@@ -33,7 +33,7 @@ writeXStringSet(poorseqs, filepath=poorseqsfile, append=FALSE,
 
 
 
-
+# TODO: ADD MINIMUM EVAL OR OTHER FILTER ON BLAST SEARCH?
 # Blast poor matching sequences to local NCBI nt databse, get top hit, write to file
 outfile <- file.path(dirname(args[2]), "poorseqs_blast_results.txt")
 system(paste("blastn -db", args[4],
