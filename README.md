@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1156380.svg)](https://doi.org/10.5281/zenodo.1156380)
+
 # SymITS2
 
 This is a collection of scripts for bioinformatic analysis of *Symbiodinium* ITS2 data. To utilize these scripts, you will need to have working installations of [qiime](http://qiime.org), [GNU parallel](https://www.gnu.org/software/parallel/), [blast (>2.2.31)](https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download), [R](https://www.r-project.org), [gawk](https://www.gnu.org/software/gawk/manual/html_node/This-Manual.html) (can be downloaded on Linux machines via 'sudo apt install gawk'), and the R packages [Biostrings](https://bioconductor.org/packages/release/bioc/html/Biostrings.html), [phyloseq](https://bioconductor.org/packages/release/bioc/html/phyloseq.html), [stringr](https://cran.r-project.org/web/packages/stringr/index.html), and [reshape2](https://cran.r-project.org/web/packages/reshape2/index.html)).
