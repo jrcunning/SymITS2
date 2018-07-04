@@ -26,7 +26,7 @@ poortax <- subset(tax, as.numeric(sim) < 90)$otu
 # Get corresponding sequences
 seqs <- readDNAStringSet(args[2])
 names(seqs) <- gsub(" .*$", "", names(seqs))
-poorseqs <- subset(seqs, names(seqs) %in% poortax)
+poorseqs <- seqs[which(names(seqs) %in% poortax),]
 
 # Split poor-matching sequences into X equal-sized files where X is number of cores available
 ncores <- detectCores()
